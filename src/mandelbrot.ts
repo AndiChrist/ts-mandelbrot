@@ -1,24 +1,6 @@
 import { createCanvas } from 'canvas';
 import * as fs from 'fs';
-
-// ---- Complex Class ----
-class Complex {
-    constructor(public re: number, public im: number) {}
-
-    add(other: Complex): Complex {
-        return new Complex(this.re + other.re, this.im + other.im);
-    }
-
-    mul(other: Complex): Complex {
-        const re = this.re * other.re - this.im * other.im;
-        const im = this.re * other.im + this.im * other.re;
-        return new Complex(re, im);
-    }
-
-    abs2(): number {
-        return this.re * this.re + this.im * this.im;
-    }
-}
+import { Complex } from './Complex';
 
 // ---- Mandelbrot Function ----
 function mandelbrot(c: Complex, maxIter: number): number {
@@ -90,4 +72,3 @@ for (let px = 0; px < width; px++) {
 const buffer = canvas.toBuffer('image/png');
 fs.writeFileSync('mandelbrot.png', buffer);
 console.log('✅ mandelbrot.png gespeichert');
-
