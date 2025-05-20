@@ -2,9 +2,8 @@ import { createCanvas } from 'canvas';
 import * as fs from 'fs';
 import { Complex } from './Complex';
 
-// ---- Mandelbrot Function ----
-function mandelbrot(c: Complex, maxIter: number): number {
-    let z = new Complex(0, 0);
+// ---- Julia Function ----
+function julia(z: Complex, c: Complex, maxIter: number): number {
     let iter = 0;
     while (z.abs2() <= 4 && iter < maxIter) {
         z = z.mul(z).add(c);
@@ -32,13 +31,15 @@ const ymin = centerY - zoom;
 const ymax = centerY + zoom;
 
 // Zeichnen
+const c = new Complex(-0.7, 0.27015); // typisches Beispiel (für Julia)
+
 for (let px = 0; px < width; px++) {
     for (let py = 0; py < height; py++) {
         const x = xmin + (px / width) * (xmax - xmin);
         const y = ymin + (py / height) * (ymax - ymin);
 
-        const c = new Complex(x, y);
-        const iter = mandelbrot(c, maxIter);
+        const z = new Complex(x, y); // <- hier ist z nun variabel, c bleibt fix
+        const iter = julia(z, c, maxIter);
 
         // Farbgebung: HSL
         if (iter === maxIter) {
@@ -54,5 +55,5 @@ for (let px = 0; px < width; px++) {
 
 // Speichern
 const buffer = canvas.toBuffer('image/png');
-fs.writeFileSync('mandelbrot.png', buffer);
-console.log('✅ mandelbrot.png gespeichert');
+fs.writeFileSync('julia.png', buffer);
+console.log('✅ julia.png gespeichert');
